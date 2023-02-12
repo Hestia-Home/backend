@@ -3,10 +3,12 @@ from typing import AsyncGenerator
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase, SQLAlchemyBaseUserTable
-from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP
+from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, DeclarativeMeta
 from config import DB_USER, DB_NAME, DB_PORT, DB_HOST, DB_PASS
+
+from database.models import UserCategory
 
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
@@ -22,6 +24,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_active: bool = Column(Boolean, default=True, nullable=False)
     is_superuser: bool = Column(Boolean, default=False, nullable=False)
     is_verified: bool = Column(Boolean, default=False, nullable=False)
+    user_type = Column(Integer, ForeignKey(UserCategory.id))
 
 
 engine = create_async_engine(DATABASE_URL)
