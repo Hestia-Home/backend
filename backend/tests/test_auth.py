@@ -5,6 +5,7 @@
 from conftest import client
 import time
 
+
 class TestUserAuthentication:
     def test_register_and_login_client(self):
         response = client.post("/auth/register",
@@ -20,13 +21,13 @@ class TestUserAuthentication:
         assert response.status_code == 201
         data = response.json()
         assert data["email"] == "user@example.com"
-        assert data["is_active"] == True
-        assert data["is_superuser"] == False
-        assert data["is_verified"] == False
+        assert data["is_active"] is True
+        assert data["is_superuser"] is False
+        assert data["is_verified"] is False
         assert data["username"] == "string"
-        assert not "password" in data
+        assert "password" not in data
+        assert "hashed_password" not in data
         client.post("/login")
-        time.time()
 
         response = client.post("/auth/jwt/login", data={"username": "user@example.com", "password": "string"})
         assert response.status_code == 200
