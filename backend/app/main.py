@@ -3,6 +3,7 @@ from fastapi import FastAPI, Depends
 from .auth.db import User
 from .auth.schemas import UserCreate, UserRead, UserUpdate
 from .auth.users import auth_backend, current_active_user, fastapi_users
+from .routers.wsdata import ws_router
 
 app = FastAPI()
 
@@ -28,6 +29,12 @@ app.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
     prefix="/users",
     tags=["users"],
+)
+
+app.include_router(
+    ws_router,
+    prefix="/ws",
+    tags=["websockets"]
 )
 
 
