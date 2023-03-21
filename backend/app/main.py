@@ -46,5 +46,3 @@ async def authenticated_route(user: User = Depends(current_active_user)):
 @app.get("/")
 async def main():
     return {"message": "success"}
-
-"1231231231231"
