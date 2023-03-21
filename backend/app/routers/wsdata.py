@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 from fastapi.responses import HTMLResponse
 
-from ..dependencies import get_random_data
+from ..fake_data.random_temperature import get_random_temperature_data
 
 ws_router = APIRouter()
 
@@ -41,7 +41,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         # for _ in range(10):
         while True:
         # websocket.receive_text()
-            data = get_random_data()
+            data = get_random_temperature_data()
             await manager.send_json_message(data, websocket)
             await asyncio.sleep(30)
     except WebSocketDisconnect:
