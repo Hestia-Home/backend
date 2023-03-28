@@ -16,10 +16,10 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
-        # print("Hello user!")
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
+        websocket.close()
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
         await websocket.send_text(message)
@@ -38,13 +38,9 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
     try:
-        # for _ in range(10):
         while True:
-        # websocket.receive_text()
             data = get_random_temperature_data()
             await manager.send_json_message(data, websocket)
             await asyncio.sleep(30)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        # except WebSocketException:
-        #     manager.disconnect(websocket)
