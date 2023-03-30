@@ -45,6 +45,23 @@ class TestUserAuthentication:
         assert response.status_code == 401
         assert response.json().get("detail") == "Unauthorized"
 
+    def test_logout_client(self):
+        response = client.post("/auth/jwt/login", data={"username": "user@example.com", "password": "example_password"})
+        data = response.json()
+        access_token = data["access_token"]
+        response = client.post("/auth/jwt/logout", headers={"Authorization": f"Bearer {access_token}"})
+        assert response.status_code == 200
+        response = client.get("/authenticated-route")
+        assert response.status_code == 401
+        data = response.json()
+        assert data.get("detail") == "Unauthorized"
+
+    def test_bad_login(self):
+        response = client.post("/auth/jwt/login", data={"username": "user123@example.com", "password": "example_password"})
+        assert response.status_code == 400
+        data = response.json()
+        assert data.get("detail") == "LOGIN_BAD_CREDENTIALS"
+
     def test_user_get_himself(self):
         client.post("/auth/register",
                     json={
