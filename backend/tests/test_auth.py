@@ -57,7 +57,8 @@ class TestUserAuthentication:
         assert data.get("detail") == "Unauthorized"
 
     def test_bad_login(self):
-        response = client.post("/auth/jwt/login", data={"username": "user123@example.com", "password": "example_password"})
+        response = client.post("/auth/jwt/login",
+                               data={"username": "user123@example.com", "password": "example_password"})
         assert response.status_code == 400
         data = response.json()
         assert data.get("detail") == "LOGIN_BAD_CREDENTIALS"
