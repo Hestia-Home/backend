@@ -14,7 +14,7 @@ from config import DB_HOST, DB_PASS, DB_PORT, DB_USER
 from app.main import app
 
 # DATABASE
-DATABASE_URL_TEST = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/test_db"
+DATABASE_URL_TEST = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@0.0.0.0:{DB_PORT}/test_db"
 
 engine_test = create_async_engine(DATABASE_URL_TEST, poolclass=NullPool)
 async_session_maker = sessionmaker(engine_test, class_=AsyncSession, expire_on_commit=False)
