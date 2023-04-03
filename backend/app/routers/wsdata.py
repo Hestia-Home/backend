@@ -1,6 +1,7 @@
 import time
 import asyncio
 
+from app_log import logger
 from fastapi import APIRouter
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 from fastapi.responses import HTMLResponse
@@ -16,6 +17,7 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
+        logger.debug(f"")
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
