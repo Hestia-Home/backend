@@ -1,7 +1,7 @@
 import time
 import asyncio
 
-from app_log import logger
+from log_settings import logger
 from fastapi import APIRouter
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 from fastapi.responses import HTMLResponse

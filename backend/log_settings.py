@@ -1,18 +1,21 @@
+import logging.config
+
 logger_config = {
     "version": 1,
     "disable_existing_loggers": False,
 
     "formatters": {
         "std_format": {
-            "format": "{asctime} - {levelname} - {name} - {message}",
+            "format": "[{asctime} - {levelname} - {name}] {message}",
             "style": "{"
         }
     },
     "handlers": {
         "console": {
-            "class": "logging.StreamHandler",
+            "class": "logging.FileHandler",
             "level": "DEBUG",
             "formatter": "std_format",
+            "filename": "app_log.log"
         }
     },
     "loggers": {
@@ -28,3 +31,7 @@ logger_config = {
     # "root": {}, # '': {}
     # "incremental": True
 }
+
+logging.config.dictConfig(logger_config)
+
+logger = logging.getLogger("app_logger")
