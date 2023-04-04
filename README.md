@@ -4,7 +4,7 @@ Backend part of the application Hestia Home
 - Python 3.10
 - FastAPI
 - SQLAlchemy 1.4.46 
-- Aembic
+- Alembic
 - Docker/docker-compose
 - PostgreSQL
 - PgAdmin
