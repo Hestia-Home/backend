@@ -22,12 +22,12 @@ DB_PASS=root
 ```
 ### 3. Install requirements in venv.
 #### On Linux 
-`pip install -r requirements.txt`
+`(venv) pip install -r requirements.txt`
 
 #### On Windows. 
 In `requiremets.txt` change *psycopg2-binary* on *psycorg2*
 
-`pip install -r requirements.txt`
+`(venv) pip install -r requirements.txt`
 
 ### 4. Start app
 
