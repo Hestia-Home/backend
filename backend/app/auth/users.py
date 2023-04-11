@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import Optional, Dict, Any
+from log_settings import logger
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, IntegerIDMixin
@@ -19,17 +20,17 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"User {user.id} has registered.")
+        # print(f"User {user.id} has registered.")
+        logger.debug(f"User {user.id} has registered.")
 
-    async def on_after_forgot_password(
-            self, user: User, token: str, request: Optional[Request] = None
-    ):
-        print(f"User {user.id} has forgot their password. Reset token: {token}")
+    async def on_after_login(self, user: User, request: Optional[Request] = None):
+        logger.debug(f"User {user.id} has login.")
 
-    async def on_after_request_verify(
-            self, user: User, token: str, request: Optional[Request] = None
-    ):
-        print(f"Verification requested for user {user.id}. Verification token: {token}")
+    async def on_after_delete(self, user: User, request: Optional[Request] = None) -> None:
+        logger.debug(f"User {user.id} deleted.")
+
+    async def on_after_update(self, user: User, update_dict: Dict[str, Any], request: Optional[Request] = None,) -> None:
+        logger.debug(f"User {user.id} update his profile.")
 
 
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
@@ -52,3 +53,4 @@ auth_backend = AuthenticationBackend(
 fastapi_users = FastAPIUsers[User, int](get_user_manager, [auth_backend])
 
 current_active_user = fastapi_users.current_user(active=True)
+super_user = fastapi_users.current_user(superuser=True)
