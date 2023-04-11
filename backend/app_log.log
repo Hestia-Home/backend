@@ -1,7 +1,3 @@
-2023-04-03 15:59:00,944 - DEBUG - app_logger - User 4 has registered.
-[2023-04-03 16:00:43,709 - DEBUG - app_logger] : User 5 has registered.
-[2023-04-03 16:01:14,181 - DEBUG - app_logger] User 6 has registered.
-[2023-04-04 13:08:27,211 - DEBUG - app_logger] User 1 has registered.
 [2023-04-04 13:08:27,471 - DEBUG - app_logger] User 1 has login.
 [2023-04-04 13:08:27,723 - DEBUG - app_logger] User 1 has login.
 [2023-04-04 13:08:28,032 - DEBUG - app_logger] User 1 has login.
@@ -13,3 +9,14 @@
 [2023-04-04 13:08:46,569 - DEBUG - app_logger] User 1 has login.
 [2023-04-04 13:08:47,178 - DEBUG - app_logger] User 2 has registered.
 [2023-04-04 13:08:47,439 - DEBUG - app_logger] User 2 has login.
+[2023-04-04 13:11:36,850 - DEBUG - app_logger] User 1 has registered.
+[2023-04-04 13:11:37,111 - DEBUG - app_logger] User 1 has login.
+[2023-04-04 13:11:37,381 - DEBUG - app_logger] User 1 has login.
+[2023-04-04 13:11:37,721 - DEBUG - app_logger] User 1 has login.
+[2023-04-04 13:11:38,422 - DEBUG - app_logger] User 2 has registered.
+[2023-04-04 13:11:38,688 - DEBUG - app_logger] User 2 has login.
+[2023-04-11 11:01:20,309 - DEBUG - app_logger] User 1 has registered.
+[2023-04-11 11:04:00,028 - DEBUG - app_logger] User 1 has registered.
+[2023-04-11 11:27:44,071 - DEBUG - app_logger] User 2 has registered.
+[2023-04-11 11:42:29,398 - DEBUG - app_logger] User 2 has login.
+[2023-04-11 11:42:54,804 - DEBUG - app_logger] User 1 has login.

@@ -45,11 +45,11 @@ class UserSubject(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
-    user_id = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
 
     user = relationship("User", back_populates="subjects")
     reader_devices = relationship("ReaderDevice", back_populates="subject")
-    control_devices = relationship("ReaderDevice", back_populates="subject")
+    control_devices = relationship("ControlDevice", back_populates="subject")
 
     def __repr__(self):
         return f"User Subject: id={self.id!r}, name={self.name!r}, user_id={self.user_id!r}"
@@ -77,7 +77,7 @@ class ControlDevice(Base):
     subject_id = Column(Integer, ForeignKey("user_subject.id"))
 
     subject = relationship("UserSubject", back_populates="control_devices")
-    sensors = relationship("ControlDevice", back_populates="control_device")
+    sensors = relationship("ControlSensor", back_populates="control_device")
 
     def __repr__(self):
         return f"Control Device: id={self.id!r}, name={self.name!r}, subject_id={self.subject_id!r}"
