@@ -11,8 +11,8 @@ Backend part of the application Hestia Home
 
 ## Quick start:
 
-### 1. clone this project
-### 2. create .env
+1. clone this project
+2. create .env
 ```
 DB_HOST=localhost
 DB_PORT=5432
@@ -20,7 +20,7 @@ DB_NAME=main_db
 DB_USER=root
 DB_PASS=root
 ```
-### 3. Install requirements in venv.
+3. Install requirements in venv.
 #### On Linux 
 `(venv) pip install -r requirements.txt`
 
@@ -28,23 +28,22 @@ DB_PASS=root
 In `requiremets.txt` change *psycopg2-binary* on *psycorg2*
 
 `(venv) pip install -r requirements.txt`
-
-### 4. Start app
+4. Start app
 
 
 `uvicorn app.main:app --reload`
 
-### 5. Start docker compose
+5. Start docker compose
 
 `docker compose up`
 
-### 6. Make migrations
+6. Make migrations
 
 ```
 alembic revision --message="Initial" --autogenerate
 alembic upgrade head
 ```
 
-### 7. Check tests.
+7. Check tests.
 
 `pytest tests/`
