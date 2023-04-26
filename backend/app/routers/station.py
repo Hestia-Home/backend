@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, Depends
 from database.database import SessionLocal
-from database.models import Station, ControlSensor, ReadSensor
+from database.models import Station, Sensor
 from database.models import User as User_BD
 from database.schemas import SensorCreate
 from ..auth.users import super_user, current_active_user
@@ -39,13 +39,12 @@ def get_stations(user: User = Depends(super_user)):
     return stations
 
 
-@station_router.post("/link_sensor/{sensor_id}", status_code=200)
-def link_sensor_to_device(response: Response, sensor_id: int, sensor: SensorCreate, user: User = Depends(super_user)):
-    sensor_types = {"read": ReadSensor, "control": ControlSensor}
-    if sensor.type not in sensor_types:
-        response.status_code = 400
-        return {"detail": "INVALID TYPE"}
-    sensor = sensor_types[sensor.type](id=sensor.id, name=sensor.name, device_id=sensor_id)
-    session.add(sensor)
-    session.commit()
-    return {"detail": "success", "sensor": sensor}
+# @station_router.post("/link_sensor/{sensor_id}", status_code=200)
+# def link_sensor_to_device(response: Response, sensor_id: int, sensor: SensorCreate, user: User = Depends(super_user)):
+#     if sensor.type not in sensor_types:
+#         response.status_code = 400
+#         return {"detail": "INVALID TYPE"}
+#     sensor = sensor_types[sensor.type](id=sensor.id, name=sensor.name, device_id=sensor_id)
+#     session.add(sensor)
+#     session.commit()
+#     return {"detail": "success", "sensor": sensor}

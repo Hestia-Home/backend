@@ -48,40 +48,38 @@ class Station(Base):
     user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
 
     user = relationship("User", back_populates="stations")
-    reader_sensors = relationship("ReadSensor", back_populates="station")
-    control_sensors = relationship("ControlSensor", back_populates="station")
+    sensors = relationship("Sensor", back_populates="station")
 
     def __repr__(self):
-        return f"User Subject: id={self.id!r}, name={self.name!r}, user_id={self.user_id!r}"
+        return f"Station: id={self.id!r}, name={self.name!r}, user_id={self.user_id!r}"
 
 
-class ReadSensor(Base):
-    __tablename__ = "read_sensor"
+class Sensor(Base):
+    __tablename__ = "sensor"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
+    sensor_type = Column(Integer, ForeignKey("sensor_types.id"))
     data = Column(String)
+    command = Column(String)
     time = Column(TIMESTAMP, default=datetime.utcnow)
     status = Column(Boolean, default=False)
     station_id = Column(Integer, ForeignKey("station.id"))
 
-    station = relationship("Station", back_populates="reader_sensors")
+    sensor_types = relationship("SensorTypes", back_populates="sensors")
+    station = relationship("Station", back_populates="sensors")
 
     def __repr__(self):
-        return f"Reader Sensor: name={self.name!r}, time={self.time!r}, status={self.status!r}"
+        return f"Sensor: name={self.name!r}, time={self.time!r}, status={self.status!r}"
 
 
-class ControlSensor(Base):
-    __tablename__ = "control_sensor"
+class SensorTypes(Base):
+    __tablename__ = "sensor_types"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
-    data = Column(String)
-    time = Column(TIMESTAMP, default=datetime.utcnow)
-    status = Column(Boolean, default=False)
-    station_id = Column(Integer, ForeignKey("station.id"))
 
-    station = relationship("Station", back_populates="control_sensors")
+    sensors = relationship("Sensor", back_populates="sensor_types")
 
     def __repr__(self):
-        return f"Control Sensor: name={self.name!r}, time={self.time!r}, status={self.status!r}"
+        return f"Sensor Types: id={self.id!r}, name={self.name!r}"

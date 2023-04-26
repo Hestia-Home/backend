@@ -2,7 +2,7 @@ from datetime import datetime
 from fastapi import APIRouter, Response
 from .schemas import SensorData
 from database.database import SessionLocal
-from database.models import ControlSensor, ReadSensor
+from database.models import Sensor
 
 router_sensors = APIRouter()
 
@@ -11,9 +11,7 @@ session = SessionLocal()
 
 @router_sensors.put("/send_data/{sensor_id}")
 def update_data_from_sensors(sensor_id: int, response: Response, data: SensorData):
-    sensor = ReadSensor
-    if data.type == 2:
-        sensor = ControlSensor
+    sensor = Sensor
     cur_sensor = session.query(sensor).get(sensor_id)
     if not cur_sensor:
         response.status_code = 400
