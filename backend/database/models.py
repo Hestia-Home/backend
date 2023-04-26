@@ -22,7 +22,7 @@ class User(Base):
     user_type = Column(Integer, ForeignKey("user_category.id"))
 
     user_category = relationship("UserCategory", back_populates="users")
-    subjects = relationship("UserSubject", back_populates="user")
+    stations = relationship("Station", back_populates="user")
 
     def __repr__(self):
         return f"User(id={self.id!r}, username={self.username!r}, email={self.email!r})"
@@ -40,47 +40,19 @@ class UserCategory(Base):
         return f"User Category: id={self.id!r}, name={self.name!r}"
 
 
-class UserSubject(Base):
-    __tablename__ = "user_subject"
+class Station(Base):
+    __tablename__ = "station"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
 
-    user = relationship("User", back_populates="subjects")
-    reader_devices = relationship("ReaderDevice", back_populates="subject")
-    control_devices = relationship("ControlDevice", back_populates="subject")
+    user = relationship("User", back_populates="stations")
+    reader_sensors = relationship("ReadSensor", back_populates="station")
+    control_sensors = relationship("ControlSensor", back_populates="station")
 
     def __repr__(self):
         return f"User Subject: id={self.id!r}, name={self.name!r}, user_id={self.user_id!r}"
-
-
-class ReaderDevice(Base):
-    __tablename__ = "reader_device"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30), nullable=False)
-    subject_id = Column(Integer, ForeignKey("user_subject.id"))
-
-    subject = relationship("UserSubject", back_populates="reader_devices")
-    sensors = relationship("ReadSensor", back_populates="reader_device")
-
-    def __repr__(self):
-        return f"Reader Device: id={self.id!r}, name={self.name!r}, subject_id={self.subject_id!r}"
-
-
-class ControlDevice(Base):
-    __tablename__ = "control_device"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30), nullable=False)
-    subject_id = Column(Integer, ForeignKey("user_subject.id"))
-
-    subject = relationship("UserSubject", back_populates="control_devices")
-    sensors = relationship("ControlSensor", back_populates="control_device")
-
-    def __repr__(self):
-        return f"Control Device: id={self.id!r}, name={self.name!r}, subject_id={self.subject_id!r}"
 
 
 class ReadSensor(Base):
@@ -88,15 +60,15 @@ class ReadSensor(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
-    data = Column(LargeBinary)
+    data = Column(String)
     time = Column(TIMESTAMP, default=datetime.utcnow)
     status = Column(Boolean, default=False)
-    device_id = Column(Integer, ForeignKey("reader_device.id"))
+    station_id = Column(Integer, ForeignKey("station.id"))
 
-    reader_device = relationship("ReaderDevice", back_populates="sensors")
+    station = relationship("Station", back_populates="reader_sensors")
 
     def __repr__(self):
-        return f"Reader Device: name={self.name!r}, time={self.time!r}, status={self.status!r}"
+        return f"Reader Sensor: name={self.name!r}, time={self.time!r}, status={self.status!r}"
 
 
 class ControlSensor(Base):
@@ -104,12 +76,12 @@ class ControlSensor(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
-    data = Column(LargeBinary)
+    data = Column(String)
     time = Column(TIMESTAMP, default=datetime.utcnow)
     status = Column(Boolean, default=False)
-    device_id = Column(Integer, ForeignKey("control_device.id"))
+    station_id = Column(Integer, ForeignKey("station.id"))
 
-    control_device = relationship("ControlDevice", back_populates="sensors")
+    station = relationship("Station", back_populates="control_sensors")
 
     def __repr__(self):
-        return f"Control Device: name={self.name!r}, time={self.time!r}, status={self.status!r}"
+        return f"Control Sensor: name={self.name!r}, time={self.time!r}, status={self.status!r}"
