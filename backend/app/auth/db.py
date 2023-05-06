@@ -5,10 +5,10 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase, SQLAlchemyBaseUserTable
 from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import declarative_base, sessionmaker, DeclarativeMeta
+from sqlalchemy.orm import declarative_base, sessionmaker, DeclarativeMeta, relationship
 from config import DB_USER, DB_NAME, DB_PORT, DB_HOST, DB_PASS
 
-from database.models import UserCategory
+from database.models import UserCategory, Station
 
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
@@ -25,6 +25,9 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_superuser: bool = Column(Boolean, default=False, nullable=False)
     is_verified: bool = Column(Boolean, default=False, nullable=False)
     user_type = Column(Integer, ForeignKey(UserCategory.id))
+
+    # user_category = relationship("UserCategory", back_populates="users")
+    # stations = relationship("Station", back_populates="user")
 
 
 engine = create_async_engine(DATABASE_URL)

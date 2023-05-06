@@ -84,8 +84,7 @@ class TestUserAuthentication:
         assert "id" in data
         assert data.get("email") == "user1@example.com"
         assert data.get("username") == "user_example2"
-<<<<<<< HEAD
+
         assert "password" not in data or "hashed_password" not in data
-=======
+
         assert "password" not in data or "hashed_password" not in data
->>>>>>> generator_random_data
