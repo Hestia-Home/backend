@@ -46,5 +46,5 @@ alembic upgrade head
 ```
 
 ### 7. Check tests.
-
+You should create "test_db" in PgAdmin4 and then:
 `pytest tests/`

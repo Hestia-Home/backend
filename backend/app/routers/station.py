@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Response, Depends
 from database.database import SessionLocal
-from database.models import Station, Sensor
+from database.models import Station, Device
 from database.models import User as User_BD
-from database.schemas import SensorCreate
+from database.schemas import DeviceCreate
 from ..auth.users import super_user, current_active_user
 from ..auth.db import User
 

@@ -4,4 +4,6 @@
 venv
 __pychache__/
 **/__pycache__/
+migrations/versions/*
+app_log.log
 

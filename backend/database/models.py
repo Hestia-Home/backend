@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey, LargeBinary
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -48,38 +48,49 @@ class Station(Base):
     user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
 
     user = relationship("User", back_populates="stations")
-    sensors = relationship("Sensor", back_populates="station")
+    devices = relationship("Device", back_populates="station")
 
     def __repr__(self):
         return f"Station: id={self.id!r}, name={self.name!r}, user_id={self.user_id!r}"
 
 
-class Sensor(Base):
-    __tablename__ = "sensor"
+class Device(Base):
+    __tablename__ = "device"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
-    sensor_type = Column(Integer, ForeignKey("sensor_types.id"))
+    room_id = Column(Integer, ForeignKey("room.id"))
+    device_type = Column(Integer, ForeignKey("device_types.id"))
     data = Column(String)
     command = Column(String)
     time = Column(TIMESTAMP, default=datetime.utcnow)
     status = Column(Boolean, default=False)
     station_id = Column(Integer, ForeignKey("station.id"))
 
-    sensor_types = relationship("SensorTypes", back_populates="sensors")
-    station = relationship("Station", back_populates="sensors")
+    device_types = relationship("DeviceTypes", back_populates="devices")
+    station = relationship("Station", back_populates="devices")
+    room = relationship("Room", back_populates="devices")
 
     def __repr__(self):
-        return f"Sensor: name={self.name!r}, time={self.time!r}, status={self.status!r}"
+        return f"Device: name={self.name!r}, time={self.time!r}, status={self.status!r}"
 
 
-class SensorTypes(Base):
-    __tablename__ = "sensor_types"
+class Room(Base):
+    __tablename__ = "room"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(30))
+
+    devices = relationship("Device", back_populates="room")
+
+
+class DeviceTypes(Base):
+    __tablename__ = "device_types"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
 
-    sensors = relationship("Sensor", back_populates="sensor_types")
+    devices = relationship("Device", back_populates="device_types")
 
     def __repr__(self):
-        return f"Sensor Types: id={self.id!r}, name={self.name!r}"
+        return f"Device Types: id={self.id!r}, name={self.name!r}"

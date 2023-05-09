@@ -5,7 +5,7 @@ from .auth.schemas import UserCreate, UserRead, UserUpdate
 from .auth.users import auth_backend, current_active_user, fastapi_users
 from .routers.wsdata import ws_router
 from .routers.station import station_router
-from .routers.sensors.sensors_data import router_sensors
+from .routers.devices.devices_data import router_device
 
 app = FastAPI()
 
@@ -44,9 +44,9 @@ app.include_router(
     tags=["station"]
 )
 app.include_router(
-    router_sensors,
-    prefix="/sensors",
-    tags=["sensors"]
+    router_device,
+    prefix="/devices",
+    tags=["devices"]
 )
 
 @app.get("/authenticated-route")
