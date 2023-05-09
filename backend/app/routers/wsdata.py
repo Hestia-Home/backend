@@ -6,9 +6,16 @@ from fastapi import APIRouter
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 from fastapi.responses import HTMLResponse
 
+from ..auth.users import current_active_user
+from database.database import SessionLocal
+from database.models import User, Station
+
 from ..fake_data.random_temperature import get_random_temperature_data
 
 ws_router = APIRouter()
+
+session = SessionLocal()
+
 
 class ConnectionManager:
     def __init__(self):
@@ -36,9 +43,14 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
+
 @ws_router.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
+    cur_user = session.query(User).get(client_id)
+    if not cur_user:
+        return {"message": f"User {client_id} doesn't exist"}
+    # user_station = session.query(Station)
     try:
         while True:
             data = get_random_temperature_data()
