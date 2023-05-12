@@ -19,7 +19,7 @@ def update_data_from_devices(device_id: int, response: Response, data: DeviceDat
         response.status_code = 400
         return {"message": "device doesn't exist"}
     cur_device.data = data.value
-    time_now = datetime.utcnow()
+    time_now = datetime.now()
     cur_device.time = time_now
     session.commit()
     return {"message": "success update", "device_id": device_id, "value": data.value, "time": time_now}

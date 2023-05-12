@@ -24,7 +24,6 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
-        logger.debug(f"")
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
@@ -47,14 +46,36 @@ manager = ConnectionManager()
 @ws_router.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
+
     cur_user = session.query(User).get(client_id)
     if not cur_user:
-        return {"message": f"User {client_id} doesn't exist"}
-    # user_station = session.query(Station)
-    try:
-        while True:
-            data = get_random_temperature_data()
-            await manager.send_json_message(data, websocket)
-            await asyncio.sleep(30)
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        logger.debug(f"User {client_id} can't connect to websocket, because user doesn't exist")
+        await manager.send_personal_message(f"User-{client_id} doesn't exist.", websocket)
+    else:
+        logger.debug(f"User {client_id} has connect to websocket")
+        stations = cur_user.stations
+        data = get_devices(stations)
+        try:
+            while True:
+                session.commit()
+                cur_data = get_devices(stations)
+                # print(cur_data)
+                # print()
+                # print(data)
+                if data != cur_data:
+                    await manager.send_json_message(cur_data, websocket)
+                    data = cur_data
+                    await asyncio.sleep(15)
+                await asyncio.sleep(5)
+        except WebSocketDisconnect:
+            manager.disconnect(websocket)
+
+
+def get_devices(stations):
+    data = {}
+    for station in stations:
+        data[f"Station {station.id}"] = []
+        for device in station.devices:
+            data[f"Station {station.id}"].append({"id": device.id, "device_type": device.type,
+                                                  "data": device.data, "time": device.time})
+    return data

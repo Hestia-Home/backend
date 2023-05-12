@@ -60,7 +60,7 @@ class Device(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
     room_id = Column(Integer, ForeignKey("room.id"))
-    device_type = Column(Integer, ForeignKey("device_types.id"))
+    type = Column(Integer, ForeignKey("device_types.id"))
     data = Column(String)
     command = Column(String)
     time = Column(TIMESTAMP, default=datetime.utcnow)
