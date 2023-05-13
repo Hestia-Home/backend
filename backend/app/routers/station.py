@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Response, Depends
 from database.database import SessionLocal
-from database.models import Station, Device
-from database.models import User as User_BD
-from database.schemas import DeviceCreate
+from database.models import Station
+# from database.models import User as User_BD
+# from database.schemas import DeviceCreate
 from ..auth.users import super_user, current_active_user
 from ..auth.db import User
 
@@ -37,7 +37,6 @@ def bind_station(station_id: int, response: Response, user: User = Depends(curre
 def get_stations(user: User = Depends(super_user)):
     stations = session.query(Station).all()
     return stations
-
 
 # @station_router.post("/link_sensor/{sensor_id}", status_code=200)
 # def link_sensor_to_device(response: Response, sensor_id: int, sensor: SensorCreate, user: User = Depends(super_user)):

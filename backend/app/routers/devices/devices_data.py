@@ -6,6 +6,8 @@ from database.database import SessionLocal
 from database.models import Device
 from database.schemas import DeviceData
 
+from log_settings import logger
+
 router_device = APIRouter()
 
 session = SessionLocal()
@@ -22,4 +24,5 @@ def update_data_from_devices(device_id: int, response: Response, data: DeviceDat
     time_now = datetime.now()
     cur_device.time = time_now
     session.commit()
+    logger.debug(f"Device #{device_id} get new value: {data.value}")
     return {"message": "success update", "device_id": device_id, "value": data.value, "time": time_now}
