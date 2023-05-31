@@ -3,6 +3,9 @@
 """
 
 from conftest import client
+from database.database import SessionLocal
+
+session = SessionLocal()
 
 
 class TestUserAuthentication:
@@ -88,3 +91,8 @@ class TestUserAuthentication:
         assert "password" not in data or "hashed_password" not in data
 
         assert "password" not in data or "hashed_password" not in data
+
+# class TestDevices:
+#
+#     def test_send_data(self):
+#         client.post("/devices/send_data/")
